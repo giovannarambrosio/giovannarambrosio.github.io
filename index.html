@@ -93,7 +93,6 @@ header.topbar{
 }
 .sub{font-size:12.5px;color:var(--text-soft);font-weight:500;}
 .sub-sep{opacity:.55;margin:0 4px;}
-.topbar-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:center;}
 .app-footer{
   position:relative;
   text-align:center;padding:22px 20px 26px;font-size:12px;color:var(--text-faint);
@@ -236,6 +235,7 @@ table.data.heatmap th{font-size:9px;}
 .chip{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:7px;line-height:1.3;}
 .chip-green{background:var(--green-bg);color:var(--green);}
 .chip-amber{background:var(--amber-bg);color:var(--amber);}
+.chip-red{background:var(--red-bg);color:var(--red);}
 .chip-purple{background:var(--primary-wash);color:var(--primary);}
 .chip-gray{background:var(--bg);color:var(--text-soft);border:1px solid var(--border);}
 .cno-input{
@@ -364,6 +364,10 @@ table.data.heatmap th{font-size:9px;}
 .auth-input:focus{outline:none;border-color:var(--primary);}
 .auth-error{color:var(--red);font-size:11.5px;font-weight:600;min-height:16px;margin-bottom:6px;}
 .auth-btn{width:100%;justify-content:center;padding:11px;}
+
+/* ---------- demos horizontal (compacta) ---------- */
+table.demos-h th, table.demos-h td{padding:6px 8px;font-size:11.5px;text-align:center;}
+table.demos-h td:first-child, table.demos-h th:first-child{text-align:left;}
 </style></head><body>
 
 <div id="authGate" class="auth-gate">
@@ -439,27 +443,26 @@ table.data.heatmap th{font-size:9px;}
   <div class="section-title">MRR Atual vs Potencial por Canal</div>
   <div class="card"><div class="chart-box tall"><canvas id="chartMrrCanal"></canvas></div></div>
 
-  <div class="grid grid-2" style="margin-top:14px;">
-    <div class="card">
-      <div class="section-title" style="margin:0 0 10px;">
-        Metas por Canal — Nova Venda x Expansão de Base
+  <div class="card" style="margin-top:14px;">
+    <div class="section-title" style="margin:0 0 10px;">
+      Metas por Canal — Nova Venda x Expansão de Base
+      <span>
+        <button class="btn btn-sm" onclick="openTramitesModal()">📋 Trâmites do mês</button>
         <button class="btn btn-sm btn-primary" onclick="openAddVendaModal()">📈 Lançar venda/expansão</button>
-      </div>
-      <div class="table-scroll">
-        <table class="data compact" id="tblMetasCanal">
-          <thead><tr><th>Canal</th><th class="num">Meta Venda</th><th class="num">Realizado</th><th class="num">%</th><th class="num">Meta EB</th><th class="num">Realizado EB</th><th class="num">%</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+      </span>
     </div>
-    <div class="card">
-      <div class="section-title" style="margin:0 0 10px;">Demos — Meta Starian x Realizado</div>
-      <div class="table-scroll">
-        <table class="data compact" id="tblDemos">
-          <thead><tr><th>Canal</th><th class="num">Meta (mês)</th><th class="num">Realizado (mês)</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <div class="table-scroll">
+      <table class="data compact" id="tblMetasCanal">
+        <thead><tr><th>Canal</th><th class="num">Meta Venda</th><th class="num">Realizado</th><th class="num">%</th><th class="num">Meta EB</th><th class="num">Realizado EB</th><th class="num">%</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:14px;padding:12px 18px;">
+    <div class="section-title" style="margin:0 0 8px;font-size:12px;">Demos — Meta Starian x Realizado</div>
+    <div class="table-scroll">
+      <table class="data compact demos-h" id="tblDemos"></table>
     </div>
   </div>
 
@@ -501,15 +504,15 @@ table.data.heatmap th{font-size:9px;}
     <table class="data compact heatmap" id="tblClientes">
       <colgroup>
         <col style="width:14%"><col style="width:7%"><col style="width:5%"><col style="width:7%">
-        <col style="width:9%"><col style="width:5%"><col style="width:5%"><col style="width:7%"><col style="width:5%"><col style="width:5%">
-        <col style="width:6%"><col style="width:6%"><col style="width:6%"><col style="width:8%">
+        <col style="width:8%"><col style="width:5%"><col style="width:5%"><col style="width:7%"><col style="width:6%"><col style="width:6%">
+        <col style="width:5%"><col style="width:5%"><col style="width:8%"><col style="width:6%"><col style="width:6%">
       </colgroup>
       <thead><tr>
         <th style="cursor:pointer;" onclick="setTableSort('nome')" id="thCliente">Cliente <span id="arrowNome"></span></th>
         <th>Canal</th><th>Saúde</th>
         <th class="num" style="cursor:pointer;" onclick="setTableSort('mrrReal')" id="thMRR">MRR <span id="arrowMRR"></span></th>
-        <th>Plano</th><th>Obras</th><th>CNO</th><th>ERP</th><th>GC</th><th>PI</th>
-        <th>Incorp.</th><th>Gantt</th><th>LOB</th><th>EB</th>
+        <th>Plano</th><th>Obras</th><th>CNO</th><th>GC</th><th>PI</th><th>Incorp.</th>
+        <th>Gantt</th><th>LOB</th><th>EB</th><th>Risco</th><th>Inad.</th>
       </tr></thead>
       <tbody></tbody>
     </table>
@@ -550,6 +553,7 @@ table.data.heatmap th{font-size:9px;}
   <div class="footer-icons">
     <button class="footer-icon-btn" id="btnSync" title="Sincronização em nuvem">🔗</button>
     <button class="footer-icon-btn" id="btnAuditFull" title="Ver histórico completo de alterações">🕒</button>
+    <button class="footer-icon-btn" title="Zerar base de dados (apaga tudo, com dupla confirmação)" onclick="resetAllData()">🗑️</button>
   </div>
   <div class="footer-actions">
     <button class="btn btn-sm" id="btnImportMenu">⭳ Importar</button>
@@ -847,17 +851,100 @@ function toDateStr(v){
   return d.toISOString().slice(0,10);
 }
 
+// -------- 1) Metas do Mês (arquivo "Metas do Mês") --------
+// Uma linha por Canal + Mês. Linha com Canal EM BRANCO = ajuste geral (só na meta consolidada).
+function parseGoalsSimple(wb){
+  const ws = getSheetByName(wb, 'Metas do Mês');
+  const rows = sheetToRows(ws);
+  const porCanal = {};
+  const consolidado = {};
+  GOAL_MONTHS.forEach(m=>{ consolidado[m] = {venda:0, eb:0}; });
+
+  rows.forEach(r=>{
+    const canalRaw = r['Canal'];
+    const mesRaw = String(r['Mês']||r['Mes']||'').trim();
+    if(!mesRaw) return;
+    const mIdx = GOAL_MONTHS.findIndex(m=>m.toLowerCase()===mesRaw.toLowerCase());
+    if(mIdx<0) return;
+    const metaVenda = Number(r['Meta Venda Nova']) || 0;
+    const metaEB = Number(r['Meta Expansão de Base']) || 0;
+    const metaDemos = Number(r['Meta Demos']) || 0;
+
+    if(!String(canalRaw||'').trim()){
+      consolidado[GOAL_MONTHS[mIdx]].venda += metaVenda;
+      consolidado[GOAL_MONTHS[mIdx]].eb += metaEB;
+      return;
+    }
+    const canal = normalizeCanal(canalRaw);
+    if(!porCanal[canal]) porCanal[canal] = {venda:[0,0,0,0,0,0], eb:[0,0,0,0,0,0], demos:[0,0,0,0,0,0], executivo: r['Executivo']||execForCanal(canal)};
+    porCanal[canal].venda[mIdx] += metaVenda;
+    porCanal[canal].eb[mIdx] += metaEB;
+    porCanal[canal].demos[mIdx] += metaDemos;
+    consolidado[GOAL_MONTHS[mIdx]].venda += metaVenda;
+    consolidado[GOAL_MONTHS[mIdx]].eb += metaEB;
+  });
+  return {porCanal, consolidado};
+}
+
+// -------- 1b) Clientes Canal — só o ID é obrigatório; célula em branco nunca apaga o que já está salvo --------
+function parseClientesCanal(wb){
+  const ws = getSheetByName(wb, 'Clientes Canal');
+  const rows = sheetToRows(ws);
+  const out = [];
+  rows.forEach(r=>{
+    const id = r['ID'];
+    if(id===null || id===undefined || id==='') return;
+    if(/exemplo/i.test(String(id)) || /linha de exemplo/i.test(String(r['Notas']||''))) return; // linha modelo
+    const vendedorRaw = (r['Vendedor']||'').toString().trim();
+    let canal, canalIncerto=false, executivo=null;
+    if(vendedorRaw){
+      const key = vendedorRaw.toLowerCase();
+      canal = CANAL_LOOKUP[key];
+      if(canal === '__incerto__'){ canal = 'Incerto'; canalIncerto = true; }
+      else if(!canal){ canal = 'Não mapeado'; canalIncerto = true; }
+      executivo = CANAL_EXEC[canal] || null;
+    }
+    const cnpjRaw = r['CNPJ'];
+    out.push({
+      id: String(id).trim(),
+      cnpj: cnpjRaw!==null && cnpjRaw!==undefined ? onlyDigits(cnpjRaw) : undefined,
+      cnpjOriginal: cnpjRaw ?? undefined,
+      nome: r['Cliente'] || undefined,
+      vendedor: vendedorRaw || undefined,
+      canal, canalIncerto, executivo,
+      cs: r['CS'] || undefined,
+      estado: r['Estado'] ? normalizeEstado(r['Estado']) : undefined,
+      erp: r['ERP'] || undefined,
+      porte: r['Porte'] || undefined,
+      status: r['Status'] || undefined,
+      plano: r['Plano'] || undefined,
+      modeloAtendimento: r['Modelo de Atendimento'] || undefined,
+      mrrReal: (typeof r['MRR Faturado']==='number') ? r['MRR Faturado'] : undefined,
+      obrasContratadas: (typeof r['Obras Contratadas']==='number') ? r['Obras Contratadas'] : undefined,
+      cno: (typeof r['CNO']==='number') ? r['CNO'] : undefined,
+      obrasGantt: (typeof r['Licenças Gantt']==='number') ? r['Licenças Gantt'] : undefined,
+      obrasLOB: (typeof r['Licenças LOB']==='number') ? r['Licenças LOB'] : undefined,
+      dataGanho: toDateStr(r['Data Ganho']),
+      ultimoUpsell: toDateStr(r['Último Upsell']),
+      implantacaoValor: (typeof r['Valor de Implantação']==='number') ? r['Valor de Implantação'] : undefined,
+      gc: boolFromSimNao(r['GC']),
+      pi: boolFromSimNao(r['PI']),
+      incorporadora: boolFromSimNao(r['É Incorporadora']),
+      riscoCancelamento: boolFromSimNao(r['Risco de Cancelamento']),
+      inadimplente: boolFromSimNao(r['Em Inadimplência']),
+      saude: normalizeSaude(r['Saúde']),
+      ultimaAbordagem: toDateStr(r['Última Abordagem']),
+      notas: r['Notas'] || undefined,
+      origem: 'consolidado'
+    });
+  });
+  return out;
+}
+
 // -------- 2) Vendas e Expansão do Mês (arquivo "Vendas e Expansão do Mês") --------
 // Formato TRANSACIONAL: uma linha por venda/expansão/demo, dia a dia, com valor e licença detalhados.
 // Colunas: Data | Canal | Cliente | Tipo | Produto | Obras | Valor
 // "Tipo" aceita: Venda Nova / Expansão de Base / Demo (só isso muda em qual meta a venda entra)
-function normalizeTipoVenda(v){
-  const s = stripAccents(String(v||'')).toLowerCase().trim();
-  if(s.startsWith('venda')) return 'venda';
-  if(s.startsWith('expans')) return 'eb';
-  if(s.startsWith('demo')) return 'demos';
-  return null;
-}
 // Agrega a lista de transações em {canal: {venda:[6], eb:[6], demos:[6]}} — mesmo formato usado pelas tabelas/KPIs
 function aggregateRealizado(vendas){
   const porCanal = {};
@@ -901,12 +988,12 @@ function buildCatalogTemplateWorkbook(){
 function buildClientesTemplateWorkbook(){
   const headers = ['ID','CNPJ','Cliente','Vendedor','CS','Estado','ERP','Porte','Status','Plano',
     'Modelo de Atendimento','MRR Faturado','Obras Contratadas','CNO','Licenças Gantt','Licenças LOB','Data Ganho','Último Upsell',
-    'Valor de Implantação','GC','PI','É Incorporadora','Saúde','Última Abordagem','Notas'];
+    'Valor de Implantação','GC','PI','É Incorporadora','Risco de Cancelamento','Em Inadimplência','Saúde','Última Abordagem','Notas'];
   const exemplo = {
     'ID':'EXEMPLO','CNPJ':'00000000000000','Cliente':'Exemplo Construtora Ltda (apagar esta linha)','Vendedor':'Lucas Gerent','CS':'Tamyres Souza',
     'Estado':'ES','ERP':'Sienge Plataforma','Porte':'M3','Status':'Ativo','Plano':'PRO','Modelo de Atendimento':'HIGH TOUCH',
     'MRR Faturado':7420,'Obras Contratadas':7,'CNO':7,'Licenças Gantt':4,'Licenças LOB':3,'Data Ganho':'2025-09-25','Último Upsell':'',
-    'Valor de Implantação':'','GC':'Não','PI':'Não','É Incorporadora':'Sim','Saúde':'verde','Última Abordagem':'','Notas':'linha de exemplo — pode apagar'
+    'Valor de Implantação':'','GC':'Não','PI':'Não','É Incorporadora':'Sim','Risco de Cancelamento':'Não','Em Inadimplência':'Não','Saúde':'verde','Última Abordagem':'','Notas':'linha de exemplo — pode apagar'
   };
   const wb = XLSX.utils.book_new();
   const ws = XLSX.utils.json_to_sheet([exemplo], {header:headers});
@@ -922,7 +1009,7 @@ function buildClientesTemplateWorkbook(){
 // Aba/arquivo "Clientes Canal" pode trazer TODOS os campos do cliente, inclusive os manuais
 const FIELDS_FROM_CLIENTES = ['nome','vendedor','canal','canalIncerto','executivo','cnpj','cnpjOriginal','cs','estado','erp','porte','status',
   'plano','modeloAtendimento','mrrReal','obrasContratadas','cno','obrasGantt','obrasLOB','dataGanho','ultimoUpsell','implantacaoValor',
-  'gc','pi','incorporadora','saude','ultimaAbordagem','notas'];
+  'gc','pi','incorporadora','riscoCancelamento','inadimplente','saude','ultimaAbordagem','notas'];
 
 function computeDiff(existing, incoming, fields){
   const diffs = [];
@@ -993,16 +1080,7 @@ function applyGoalsImport(goalsResult){
   renderAll();
 }
 
-// ---------- 4) Vendas e Expansão do Mês (realizado, transacional) ----------
-function applyRealizadoImport(vendas){
-  STATE.vendasDetalhadas = vendas || [];
-  STATE.realizado = aggregateRealizado(STATE.vendasDetalhadas);
-  STATE.meta.lastImportRealizado = todayISO();
-  saveState();
-  toast(`Vendas e Expansão do mês atualizadas: ${STATE.vendasDetalhadas.length} lançamento(s).`);
-  closeModal();
-  renderAll();
-}
+
 
 /* =========================================================================
    MODAIS — genérico + telas específicas
@@ -1052,8 +1130,19 @@ function openImportMenu(){
     <div style="font-size:11.5px;color:var(--text-faint);margin-top:12px;">
       Últimas importações — Clientes: ${fmtDate(STATE.meta.lastImportClientes)} · Metas: ${fmtDate(STATE.meta.lastImportGoals)}
     </div>
+
   `);
 }
+function resetAllData(){
+  if(!confirm('Isso apaga TODA a base: clientes, metas, lançamentos de vendas, kanban e histórico. O catálogo volta aos valores padrão. Deseja continuar?')) return;
+  if(!confirm('Última confirmação: essa ação não pode ser desfeita (e também limpa a versão na nuvem). Zerar tudo agora?')) return;
+  STATE = defaultState();
+  saveState(); // grava local e empurra a base zerada pra nuvem (senão outro aparelho re-sincronizaria os dados antigos)
+  closeModal();
+  renderAll();
+  toast('Base zerada. Pode importar os novos Excels.');
+}
+
 function downloadClientesTemplate(){
   XLSX.writeFile(buildClientesTemplateWorkbook(), 'modelo-clientes-canal.xlsx');
   toast('Modelo de clientes baixado.');
@@ -1135,17 +1224,55 @@ function openClientDiffModal(plan){
 function openClientEdit(id){
   const c = STATE.clients[id];
   if(!c) return;
-  const catalogOptions = STATE.catalog.map(p=>p.produto);
   openModal(`
-    <h3>${c.nome}</h3>
-    <div class="modal-sub">ID ${c.id} · CNPJ ${c.cnpjOriginal||c.cnpj||'—'} · Canal ${c.canal||'—'}${c.canalIncerto?' <span class="pill pill-amber">incerto</span>':''}</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 14px;font-size:11.5px;color:var(--text-soft);background:var(--bg);border-radius:10px;padding:10px 12px;margin-bottom:14px;">
-      <div><b>Vendedor:</b> ${c.vendedor||'—'}</div>
-      <div><b>CS:</b> ${c.cs||'—'}</div>
-      <div><b>Estado:</b> ${c.estado||'—'}</div>
-      <div><b>Data Ganho:</b> ${fmtDate(c.dataGanho)}</div>
-      <div><b>Modelo:</b> ${c.modeloAtendimento||'—'}</div>
-      <div><b>Última Abordagem:</b> ${c.ultimaAbordagem?fmtDate(c.ultimaAbordagem):'—'}</div>
+    <h3>${c.nome||'(sem nome)'}</h3>
+    <div class="modal-sub">ID ${c.id} — todos os campos abaixo são editáveis, inclusive o canal.</div>
+
+    <div class="field-row">
+      <div class="field" style="flex:2;"><label>Cliente</label><input type="text" id="edNome" value="${c.nome||''}"></div>
+      <div class="field"><label>CNPJ</label><input type="text" id="edCnpj" value="${c.cnpjOriginal||c.cnpj||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Canal</label>
+        <select id="edCanal">
+          ${[...Object.keys(CANAL_EXEC).sort((a,b)=>a.localeCompare(b)), 'Incerto', 'Não mapeado'].map(cn=>`<option value="${cn}" ${c.canal===cn?'selected':''}>${cn}</option>`).join('')}
+          ${c.canal && !Object.keys(CANAL_EXEC).includes(c.canal) && !['Incerto','Não mapeado'].includes(c.canal) ? `<option value="${c.canal}" selected>${c.canal}</option>` : ''}
+        </select>
+      </div>
+      <div class="field"><label>Vendedor</label><input type="text" id="edVendedor" value="${c.vendedor||''}"></div>
+      <div class="field"><label>CS</label><input type="text" id="edCs" value="${c.cs||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Estado</label><input type="text" id="edEstado" value="${c.estado||''}"></div>
+      <div class="field"><label>ERP <span style="font-weight:400;text-transform:none;">(Sienge libera GC)</span></label><input type="text" id="edErp" value="${c.erp||''}"></div>
+      <div class="field"><label>Porte</label><input type="text" id="edPorte" value="${c.porte||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Status</label>
+        <select id="edStatus">
+          ${['Ativo','Perdido','Prospecto'].map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${s}</option>`).join('')}
+          ${c.status && !['Ativo','Perdido','Prospecto'].includes(c.status)?`<option value="${c.status}" selected>${c.status}</option>`:''}
+        </select>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Plano</label><input type="text" id="edPlano" value="${c.plano||''}"></div>
+      <div class="field"><label>Modelo de Atendimento</label><input type="text" id="edModelo" value="${c.modeloAtendimento||''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>MRR Faturado (R$)</label><input type="number" step="0.01" id="edMrr" value="${c.mrrReal ?? ''}"></div>
+      <div class="field"><label>Valor de Implantação (R$)</label><input type="number" step="0.01" id="edImplantacao" value="${c.implantacaoValor ?? ''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Obras Contratadas</label><input type="number" id="edObras" value="${c.obrasContratadas ?? ''}"></div>
+      <div class="field"><label>CNO</label><input type="number" id="edCno" value="${c.cno ?? ''}"></div>
+      <div class="field"><label>Licenças Gantt</label><input type="number" id="edGantt" value="${c.obrasGantt ?? ''}"></div>
+      <div class="field"><label>Licenças LOB</label><input type="number" id="edLob" value="${c.obrasLOB ?? ''}"></div>
+    </div>
+    <div class="field-row">
+      <div class="field"><label>Data Ganho</label><input type="date" id="edDataGanho" value="${c.dataGanho||''}"></div>
+      <div class="field"><label>Última Expansão (EB)</label><input type="date" id="edUltimoUpsell" value="${c.ultimoUpsell||''}"></div>
+      <div class="field"><label>Última Abordagem</label><input type="date" id="edUltimaAbordagem" value="${c.ultimaAbordagem||''}"></div>
     </div>
 
     <div class="field-row">
@@ -1161,27 +1288,25 @@ function openClientEdit(id){
         <select id="edMomento"><option value="nao" ${!c.momentoRuim?'selected':''}>Não</option><option value="sim" ${c.momentoRuim?'selected':''}>Sim</option></select>
       </div>
     </div>
-
     <div class="field-row">
-      <div class="field"><label>MRR Faturado (R$)</label><input type="number" step="0.01" id="edMrr" value="${c.mrrReal ?? ''}"></div>
-      <div class="field"><label>Valor de Implantação (R$)</label><input type="number" step="0.01" id="edImplantacao" value="${c.implantacaoValor ?? ''}"></div>
-    </div>
-
-    <div class="field-row">
-      <div class="field"><label>Gestão de Custos (GC)?</label>
+      <div class="field"><label>GC contratado?</label>
         <select id="edGC"><option value="nao" ${!c.gc?'selected':''}>Não</option><option value="sim" ${c.gc?'selected':''}>Sim</option></select>
       </div>
-      <div class="field"><label>Planejamento de Incorporação (PI)?</label>
+      <div class="field"><label>PI contratado?</label>
         <select id="edPI"><option value="nao" ${!c.pi?'selected':''}>Não</option><option value="sim" ${c.pi?'selected':''}>Sim</option></select>
       </div>
-    </div>
-
-    <div class="field-row">
-      <div class="field"><label>É incorporadora? <span style="font-weight:400;text-transform:none;">(preenchimento manual — define elegibilidade de PI)</span></label>
+      <div class="field"><label>É incorporadora? <span style="font-weight:400;text-transform:none;">(libera PI)</span></label>
         <select id="edIncorporadora"><option value="nao" ${!c.incorporadora?'selected':''}>Não</option><option value="sim" ${c.incorporadora?'selected':''}>Sim</option></select>
       </div>
     </div>
-
+    <div class="field-row">
+      <div class="field"><label>Risco de cancelamento?</label>
+        <select id="edRiscoCancel"><option value="nao" ${!c.riscoCancelamento?'selected':''}>Não</option><option value="sim" ${c.riscoCancelamento?'selected':''}>Sim</option></select>
+      </div>
+      <div class="field"><label>Em inadimplência?</label>
+        <select id="edInadimplente"><option value="nao" ${!c.inadimplente?'selected':''}>Não</option><option value="sim" ${c.inadimplente?'selected':''}>Sim</option></select>
+      </div>
+    </div>
     <div class="field-row">
       <div class="field"><label>Marcado manualmente como risco?</label>
         <select id="edManualRisco"><option value="nao" ${!c.manualRisco?'selected':''}>Não</option><option value="sim" ${c.manualRisco?'selected':''}>Sim</option></select>
@@ -1190,8 +1315,6 @@ function openClientEdit(id){
         <select id="edManualOp"><option value="nao" ${!c.manualOportunidade?'selected':''}>Não</option><option value="sim" ${c.manualOportunidade?'selected':''}>Sim</option></select>
       </div>
     </div>
-
-    <div class="field"><label>Última abordagem</label><input type="date" id="edUltimaAbordagem" value="${c.ultimaAbordagem||''}"></div>
 
     <div class="field"><label>Notas / pendências</label><textarea id="edNotas">${c.notas||''}</textarea></div>
 
@@ -1222,39 +1345,73 @@ function openClientEdit(id){
 
 function saveClientEdit(id){
   const c = STATE.clients[id];
-  const newSaude = document.getElementById('edSaude').value || null;
-  const newMomento = document.getElementById('edMomento').value==='sim';
-  const newMrr = parseFloat(document.getElementById('edMrr').value); const mrrVal = isNaN(newMrr)?null:newMrr;
-  const newImpl = parseFloat(document.getElementById('edImplantacao').value); const implVal = isNaN(newImpl)?null:newImpl;
-  const newGC = document.getElementById('edGC').value==='sim';
-  const newPI = document.getElementById('edPI').value==='sim';
-  const newIncorporadora = document.getElementById('edIncorporadora').value==='sim';
-  const newManualRisco = document.getElementById('edManualRisco').value==='sim';
-  const newManualOp = document.getElementById('edManualOp').value==='sim';
-  const newUltimaAbordagem = document.getElementById('edUltimaAbordagem').value;
-  const newNotas = document.getElementById('edNotas').value;
-  const newKanban = document.getElementById('edKanban').value;
-  const newProposta = document.getElementById('edPropostaData').value;
+  const g = i => document.getElementById(i).value;
+  const num = i => { const v = parseFloat(g(i)); return isNaN(v)?null:v; };
+  const sim = i => g(i)==='sim';
 
-  logChange(id,c.nome,'Saúde', c.saude, newSaude, 'manual');
-  logChange(id,c.nome,'Momento ruim p/ abordar', c.momentoRuim?'sim':'não', newMomento?'sim':'não', 'manual');
-  logChange(id,c.nome,'MRR Faturado', c.mrrReal, mrrVal, 'manual');
-  logChange(id,c.nome,'Valor de Implantação', c.implantacaoValor, implVal, 'manual');
-  logChange(id,c.nome,'GC', c.gc?'sim':'não', newGC?'sim':'não', 'manual');
-  logChange(id,c.nome,'PI', c.pi?'sim':'não', newPI?'sim':'não', 'manual');
-  logChange(id,c.nome,'É incorporadora', c.incorporadora?'sim':'não', newIncorporadora?'sim':'não', 'manual');
-  logChange(id,c.nome,'Risco (manual)', c.manualRisco?'sim':'não', newManualRisco?'sim':'não', 'manual');
-  logChange(id,c.nome,'Oportunidade (manual)', c.manualOportunidade?'sim':'não', newManualOp?'sim':'não', 'manual');
-  logChange(id,c.nome,'Última abordagem', c.ultimaAbordagem, newUltimaAbordagem, 'manual');
-  logChange(id,c.nome,'Notas', c.notas, newNotas, 'manual');
+  // campos texto/número/data (rótulo -> [campo, valor novo])
+  const campos = [
+    ['Cliente','nome', g('edNome').trim()||null],
+    ['CNPJ','cnpjOriginal', g('edCnpj').trim()||null],
+    ['Vendedor','vendedor', g('edVendedor').trim()||null],
+    ['CS','cs', g('edCs').trim()||null],
+    ['Estado','estado', g('edEstado').trim()||null],
+    ['ERP','erp', g('edErp').trim()||null],
+    ['Porte','porte', g('edPorte').trim()||null],
+    ['Status','status', g('edStatus')||null],
+    ['Plano','plano', g('edPlano').trim()||null],
+    ['Modelo de Atendimento','modeloAtendimento', g('edModelo').trim()||null],
+    ['MRR Faturado','mrrReal', num('edMrr')],
+    ['Valor de Implantação','implantacaoValor', num('edImplantacao')],
+    ['Obras Contratadas','obrasContratadas', num('edObras')],
+    ['CNO','cno', num('edCno')],
+    ['Licenças Gantt','obrasGantt', num('edGantt')],
+    ['Licenças LOB','obrasLOB', num('edLob')],
+    ['Data Ganho','dataGanho', g('edDataGanho')||null],
+    ['Último Upsell (EB)','ultimoUpsell', g('edUltimoUpsell')||null],
+    ['Última abordagem','ultimaAbordagem', g('edUltimaAbordagem')||null],
+    ['Saúde','saude', g('edSaude')||null],
+    ['Notas','notas', g('edNotas')],
+  ];
+  campos.forEach(([label, campo, novo])=>{
+    if(String(c[campo]??'') !== String(novo??'')){
+      logChange(id, c.nome, label, c[campo], novo, 'manual');
+      c[campo] = novo;
+    }
+  });
 
-  c.saude = newSaude; c.momentoRuim = newMomento; c.mrrReal = mrrVal; c.implantacaoValor = implVal;
-  c.gc = newGC; c.pi = newPI; c.incorporadora = newIncorporadora; c.manualRisco = newManualRisco; c.manualOportunidade = newManualOp;
-  c.ultimaAbordagem = newUltimaAbordagem; c.notas = newNotas; c.novoParaRevisar = false;
+  // booleanos
+  const bools = [
+    ['Momento ruim p/ abordar','momentoRuim', sim('edMomento')],
+    ['GC','gc', sim('edGC')],
+    ['PI','pi', sim('edPI')],
+    ['É incorporadora','incorporadora', sim('edIncorporadora')],
+    ['Risco de Cancelamento','riscoCancelamento', sim('edRiscoCancel')],
+    ['Em Inadimplência','inadimplente', sim('edInadimplente')],
+    ['Risco (manual)','manualRisco', sim('edManualRisco')],
+    ['Oportunidade (manual)','manualOportunidade', sim('edManualOp')],
+  ];
+  bools.forEach(([label, campo, novo])=>{
+    if(!!c[campo] !== novo){
+      logChange(id, c.nome, label, c[campo]?'sim':'não', novo?'sim':'não', 'manual');
+      c[campo] = novo;
+    }
+  });
 
-  if(!STATE.kanban[id]) STATE.kanban[id] = {stage:'identificado', proposta:'', pendencias:'', ultimaAbordagem:''};
-  STATE.kanban[id].stage = newKanban;
-  STATE.kanban[id].proposta = newProposta;
+  // Canal escolhido manualmente é a fonte de verdade (executivo acompanha o canal)
+  const novoCanal = document.getElementById('edCanal').value;
+  if(novoCanal !== c.canal){
+    logChange(id, c.nome, 'Canal', c.canal, novoCanal, 'manual');
+    c.canal = novoCanal;
+  }
+  c.canalIncerto = (novoCanal==='Incerto' || novoCanal==='Não mapeado');
+  c.executivo = CANAL_EXEC[novoCanal] || null;
+  c.cnpj = c.cnpjOriginal ? onlyDigits(c.cnpjOriginal) : c.cnpj;
+  c.novoParaRevisar = false;
+
+  if(!STATE.kanban[id]) STATE.kanban[id] = {stage:'identificado', proposta:'', pendencias:''};
+  STATE.kanban[id].stage = document.getElementById('edKanban').value;
+  STATE.kanban[id].proposta = document.getElementById('edPropostaData').value;
 
   saveState();
   toast('Cliente atualizado.');
@@ -1301,14 +1458,54 @@ function saveCatalogEdit(idx){
 
 // ---------- seletor de cliente (risco manual / oportunidade manual / adicionar ao kanban) ----------
 function openPickClientModal(mode){
-  const clients = Object.values(STATE.clients).sort((a,b)=>a.nome.localeCompare(b.nome));
   openModal(`
     <h3>Adicionar cliente ao Kanban</h3>
-    <div class="modal-sub">Busque na sua base de clientes salva.</div>
+    <div class="modal-sub">Busque na sua base — ou cadastre um cliente avulso que ainda não está nela.</div>
     <div class="field"><input type="search" id="pickSearch" placeholder="Buscar cliente..." oninput="renderPickList('${mode}')"></div>
-    <div id="pickListWrap" style="max-height:340px;overflow-y:auto;"></div>
+    <div class="field"><button class="btn" style="width:100%;justify-content:center;" onclick="openAddProspectModal()">➕ Cadastrar cliente fora da base</button></div>
+    <div id="pickListWrap" style="max-height:300px;overflow-y:auto;"></div>
   `);
   renderPickList(mode);
+}
+
+// cliente avulso: entra só no Kanban (não polui KPIs nem o Mapa de Calor)
+function openAddProspectModal(){
+  openModal(`
+    <h3>Cadastrar cliente avulso</h3>
+    <div class="modal-sub">Vai direto pro Kanban de oportunidades, sem entrar na base oficial de clientes (não afeta MRR, contagens nem o Mapa de Calor). Se um dia ele virar cliente, importe-o normalmente pelo Excel.</div>
+    <div class="field"><label>Nome do cliente *</label><input type="text" id="prNome" placeholder="Construtora Exemplo Ltda"></div>
+    <div class="field-row">
+      <div class="field"><label>Canal</label>
+        <select id="prCanal"><option value="">—</option>${CHANNELS_FOR_GOALS.map(cn=>`<option value="${cn}">${cn}</option>`).join('')}</select>
+      </div>
+      <div class="field"><label>MRR potencial (R$)</label><input type="number" step="0.01" id="prMrr" placeholder="0,00"></div>
+    </div>
+    <div class="field"><label>Notas</label><textarea id="prNotas" placeholder="Contexto, contato, próximos passos..."></textarea></div>
+    <div class="field-row" style="margin-top:8px;">
+      <button class="btn" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProspect()">Adicionar ao Kanban</button>
+    </div>
+  `);
+}
+function saveProspect(){
+  const nome = document.getElementById('prNome').value.trim();
+  if(!nome){ toast('Informe ao menos o nome do cliente.'); return; }
+  const canal = document.getElementById('prCanal').value || null;
+  const mrr = parseFloat(document.getElementById('prMrr').value);
+  const id = 'ext-'+Date.now().toString(36);
+  STATE.clients[id] = {
+    id, nome, canal, canalIncerto:false, executivo: canal ? (CANAL_EXEC[canal]||null) : null,
+    status:'Prospecto', avulso:true, origem:'manual',
+    mrrReal: isNaN(mrr)?null:mrr, saude:null, momentoRuim:false,
+    notas: document.getElementById('prNotas').value || '',
+    gc:false, pi:false, incorporadora:false, cno:null
+  };
+  STATE.kanban[id] = {stage:'identificado', proposta:'', pendencias:''};
+  logChange(id, nome, 'Status Kanban', '(novo, fora da base)', 'identificado', 'manual');
+  saveState();
+  toast(`${nome} adicionado ao Kanban.`);
+  closeModal();
+  renderTabC();
 }
 function renderPickList(mode){
   const q = (document.getElementById('pickSearch').value||'').toLowerCase();
@@ -1379,7 +1576,7 @@ function openFullAudit(){
 let CHARTS = {};
 function destroyChart(key){ if(CHARTS[key]){ CHARTS[key].destroy(); delete CHARTS[key]; } }
 
-function activeClients(){ return Object.values(STATE.clients).filter(c=>c.status!=='Perdido'); }
+function activeClients(){ return Object.values(STATE.clients).filter(c=>c.status!=='Perdido' && !c.avulso); }
 function currentMonthIdx(){ // 0=Julho...5=Dezembro, -1 se fora do range
   const m = new Date().getMonth(); // 0=jan
   return m - 6; // julho=6
@@ -1507,18 +1704,22 @@ function renderTblMetasCanal(){
 
 function renderTblDemos(){
   const mIdx = currentMonthIdx();
-  const rows = CHANNELS_FOR_GOALS.map(canal=>{
-    const g = STATE.goals[canal];
-    const r = STATE.realizado[canal];
+  const header = `<tr><th style="width:110px;"></th>${CHANNELS_FOR_GOALS.map(cn=>`<th class="num">${cn}</th>`).join('')}</tr>`;
+  const metaRow = `<tr><td style="font-weight:700;">Meta (mês)</td>${CHANNELS_FOR_GOALS.map(cn=>{
+    const g = STATE.goals[cn];
     const meta = g && mIdx>=0&&mIdx<6 ? g.demos[mIdx] : 0;
+    return `<td class="num">${meta?meta.toFixed(0):'—'}</td>`;
+  }).join('')}</tr>`;
+  const realRow = `<tr><td style="font-weight:700;">Realizado</td>${CHANNELS_FOR_GOALS.map(cn=>{
+    const r = STATE.realizado[cn];
     const real = r && mIdx>=0&&mIdx<6 ? r.demos[mIdx] : null;
     const clicavel = real ? 'style="cursor:pointer;"' : '';
-    return `<tr><td>${canal}</td><td class="num">${meta?meta.toFixed(0):'—'}</td><td class="num" ${clicavel} onclick="openVendasDetalheModal('${canal}','demos')">${real!==null?real.toFixed(0):'—'}</td></tr>`;
-  }).join('');
-  document.querySelector('#tblDemos tbody').innerHTML = rows || '<tr><td colspan="3" class="empty">Sem metas importadas.</td></tr>';
+    return `<td class="num" ${clicavel} onclick="openVendasDetalheModal('${cn}','demos')">${real!==null?real.toFixed(0):'—'}</td>`;
+  }).join('')}</tr>`;
+  document.getElementById('tblDemos').innerHTML = `<thead>${header}</thead><tbody>${metaRow}${realRow}</tbody>`;
 }
 
-// clique nos números de "Realizado" -> lista as vendas/expansões/demos individuais por trás daquele total
+// clique nos números de "Realizado"// clique nos números de "Realizado" -> lista as vendas/expansões/demos individuais por trás daquele total
 function openVendasDetalheModal(canal, tipo){
   const mIdx = currentMonthIdx();
   const labels = {venda:'Venda Nova', eb:'Expansão de Base', demos:'Demos'};
@@ -1537,7 +1738,7 @@ function openVendasDetalheModal(canal, tipo){
     <button class="btn" style="margin-top:10px;" onclick="closeModal()">Fechar</button>
   `);
 }
-function deleteVenda(id){
+function deleteVenda(id, ctx){
   const v = STATE.vendasDetalhadas.find(x=>x.id===id);
   if(!v) return;
   if(!confirm(`Remover o lançamento de ${fmtDate(v.data)}${v.cliente?' — '+v.cliente:''}?`)) return;
@@ -1546,8 +1747,36 @@ function deleteVenda(id){
   STATE.realizado = aggregateRealizado(STATE.vendasDetalhadas);
   saveState();
   toast('Lançamento removido.');
-  openVendasDetalheModal(v.canal, v.tipo);
+  if(ctx==='tramites') openTramitesModal();
+  else openVendasDetalheModal(v.canal, v.tipo);
   renderTabA();
+}
+
+// ---------- trâmites do mês: todos os lançamentos do mês corrente, de todos os canais ----------
+function openTramitesModal(){
+  const mIdx = currentMonthIdx();
+  const labels = {venda:'Venda Nova', eb:'Expansão de Base', demos:'Demo'};
+  const lista = STATE.vendasDetalhadas.filter(v=>v.mIdx===mIdx).sort((a,b)=> a.data<b.data?1:-1);
+  const totVenda = lista.filter(v=>v.tipo==='venda').reduce((s,v)=>s+v.valor,0);
+  const totEB = lista.filter(v=>v.tipo==='eb').reduce((s,v)=>s+v.valor,0);
+  const totDemos = lista.filter(v=>v.tipo==='demos').length;
+  const tipoPill = t => t==='venda' ? 'pill-purple' : t==='eb' ? 'pill-green' : 'pill-gray';
+  openModal(`
+    <h3>Trâmites de ${(mIdx>=0&&mIdx<6)?GOAL_MONTHS[mIdx]:'—'}</h3>
+    <div class="modal-sub">${lista.length} lançamento(s) · Venda Nova: <b>${fmtBRL(totVenda)}</b> · Expansão de Base: <b>${fmtBRL(totEB)}</b> · Demos: <b>${totDemos}</b></div>
+    <div style="max-height:380px;overflow-y:auto;">
+    <ul class="audit-list">
+      ${lista.map(v=>`<li style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+        <span><span class="pill ${tipoPill(v.tipo)}">${labels[v.tipo]}</span> <b>${fmtDate(v.data)}</b> · ${v.canal} — ${v.cliente||'—'}${v.produto?` · ${v.produto}`:''}${v.obras?` · ${v.obras} obra(s)`:''}${v.tipo!=='demos'?` · <b>${fmtBRL(v.valor)}</b>`:''}</span>
+        <button class="footer-icon-btn" style="color:var(--red);flex:none;" title="Remover lançamento" onclick="deleteVenda('${v.id}','tramites')">✕</button>
+      </li>`).join('') || '<li>Nenhum lançamento neste mês ainda.</li>'}
+    </ul>
+    </div>
+    <div class="field-row" style="margin-top:12px;">
+      <button class="btn" onclick="closeModal()">Fechar</button>
+      <button class="btn btn-primary" onclick="openAddVendaModal()">📈 Lançar novo</button>
+    </div>
+  `);
 }
 
 // ---------- lançamento manual de venda/expansão/demo (substitui a importação por Excel) ----------
@@ -1803,15 +2032,24 @@ function updateObras(evt, id){
   saveState();
   renderClientTable(); // recalcula também a cor do CNO, que depende de Obras
 }
-function erpChip(c){
-  if(!c.erp) return '<span class="chip chip-gray">—</span>';
-  const isSienge = /sienge/i.test(c.erp);
-  return `<span class="chip ${isSienge?'chip-purple':'chip-gray'}">${c.erp}</span>`;
-}
 function gcChip(c){
-  if(c.gc) return '<span class="chip chip-green">Sim</span>';
+  if(c.gc) return '<span class="chip chip-green">Contratado</span>';
   if(gcEligible(c)) return '<span class="chip chip-amber" title="ERP Sienge — elegível, ainda não contratado">Elegível</span>';
-  return '<span class="chip chip-gray">Não</span>';
+  return '<span class="chip chip-gray" title="ERP não é Sienge">Não elegível</span>';
+}
+// flags de atenção: clicáveis direto na tabela (vermelho quando Sim)
+function flagChip(c, campo, label){
+  const on = !!c[campo];
+  return `<span class="chip ${on?'chip-red':'chip-gray'}" style="cursor:pointer;" title="Clique para alternar" onclick="event.stopPropagation();toggleFlagCliente('${c.id}','${campo}','${label}')">${on?'Sim':'Não'}</span>`;
+}
+function toggleFlagCliente(id, campo, label){
+  const c = STATE.clients[id];
+  if(!c) return;
+  const novo = !c[campo];
+  logChange(id, c.nome, label, c[campo]?'sim':'não', novo?'sim':'não', 'manual');
+  c[campo] = novo;
+  saveState();
+  renderClientTable();
 }
 function piEligible(c){ return !!c.incorporadora; }
 function piChip(c){
@@ -1873,12 +2111,24 @@ function updateLicenca(evt, id, campo, label){
   renderClientTable();
 }
 
-// EB = data da última expansão de base ("Não" implícito quando vazio, verde quando preenchido)
-function ebInput(c){
-  const v = c.ultimoUpsell || '';
-  const cls = v ? 'cno-green' : 'cno-gray';
-  return `<input type="date" class="cno-input eb-input ${cls}" value="${v}"
-    onclick="event.stopPropagation()" onchange="updateEB(event,'${c.id}')">`;
+// EB = data da última expansão de base. Cliente que nunca expandiu mostra "Não";
+// clicar no "Não" abre o seletor de data para registrar a primeira expansão.
+function ebCell(c){
+  if(c.ultimoUpsell){
+    return `<input type="date" class="cno-input eb-input cno-green" value="${c.ultimoUpsell}"
+      onclick="event.stopPropagation()" onchange="updateEB(event,'${c.id}')">`;
+  }
+  return `<span class="chip chip-gray" style="cursor:pointer;" title="Sem expansão ainda — clique para registrar a data" onclick="event.stopPropagation();showEbPicker(this,'${c.id}')">Não</span>`;
+}
+function showEbPicker(el, id){
+  const inp = document.createElement('input');
+  inp.type = 'date';
+  inp.className = 'cno-input eb-input cno-gray';
+  inp.onclick = e=>e.stopPropagation();
+  inp.onchange = e=>updateEB(e, id);
+  el.replaceWith(inp);
+  inp.focus();
+  if(inp.showPicker){ try{ inp.showPicker(); }catch(_){} }
 }
 function updateEB(evt, id){
   const c = STATE.clients[id];
@@ -1910,6 +2160,7 @@ function renderClientTable(){
   const fPremium = document.getElementById('filterPremium').value;
 
   let clients = Object.values(STATE.clients).filter(c=>{
+    if(c.avulso) return false; // clientes avulsos vivem só no Kanban
     if(q && !(`${c.nome} ${c.cnpjOriginal||c.cnpj} ${c.vendedor}`.toLowerCase().includes(q))) return false;
     if(fCanal && c.canal!==fCanal) return false;
     if(fPlano && c.plano!==fPlano) return false;
@@ -1931,7 +2182,7 @@ function renderClientTable(){
   document.getElementById('arrowNome').innerHTML = sortArrow('nome');
   document.getElementById('arrowMRR').innerHTML = sortArrow('mrrReal');
   document.querySelector('#tblClientes tbody').innerHTML = clients.map(c=>`
-    <tr onclick="openClientEdit('${c.id}')">
+    <tr ondblclick="openClientEdit('${c.id}')" title="Duplo clique para editar todos os dados">
       <td title="${c.nome}">${c.nome}${c.novoParaRevisar?' <span class="chip chip-purple">novo</span>':''}</td>
       <td title="${c.canal||''}">${c.canal||'—'}${c.canalIncerto?' <span class="chip chip-gray">?</span>':''}</td>
       <td>${healthDot(c.saude)}</td>
@@ -1939,14 +2190,15 @@ function renderClientTable(){
       <td>${planoChip(c)}</td>
       <td>${obrasInput(c)}</td>
       <td>${cnoInput(c)}</td>
-      <td>${erpChip(c)}</td>
       <td>${gcChip(c)}</td>
       <td>${piChip(c)}</td>
       <td>${incorporadoraChip(c)}</td>
       <td>${licencaInput(c,'obrasGantt','Licenças Gantt')}</td>
       <td>${licencaInput(c,'obrasLOB','Licenças LOB')}</td>
-      <td>${ebInput(c)}</td>
-    </tr>`).join('') || `<tr><td colspan="14" class="empty">Nenhum cliente encontrado. Importe os Excels pelo botão "Importar".</td></tr>`;
+      <td>${ebCell(c)}</td>
+      <td>${flagChip(c,'riscoCancelamento','Risco de Cancelamento')}</td>
+      <td>${flagChip(c,'inadimplente','Em Inadimplência')}</td>
+    </tr>`).join('') || `<tr><td colspan="15" class="empty">Nenhum cliente encontrado. Importe os Excels pelo botão "Importar".</td></tr>`;
 }
 
 /* ---------------------------- ABA C ---------------------------- */
@@ -2095,7 +2347,7 @@ function exportToExcel(){
   const clients = Object.values(STATE.clients);
   const clientHeaders = ['ID','CNPJ','Cliente','Vendedor','CS','Estado','ERP','Porte','Status','Plano',
     'Modelo de Atendimento','MRR Faturado','Obras Contratadas','CNO','Licenças Gantt','Licenças LOB','Data Ganho','Último Upsell',
-    'Valor de Implantação','GC','PI','É Incorporadora','Saúde','Última Abordagem','Notas'];
+    'Valor de Implantação','GC','PI','É Incorporadora','Risco de Cancelamento','Em Inadimplência','Saúde','Última Abordagem','Notas'];
   const clientRows = clients.map(c=>({
     'ID': c.id, 'CNPJ': c.cnpjOriginal||c.cnpj, 'Cliente': c.nome, 'Vendedor': c.vendedor, 'CS': c.cs,
     'Estado': c.estado, 'ERP': c.erp, 'Porte': c.porte, 'Status': c.status, 'Plano': c.plano,
@@ -2104,6 +2356,7 @@ function exportToExcel(){
     'Data Ganho': (c.dataGanho && !isNaN(new Date(c.dataGanho).getTime())) ? new Date(c.dataGanho).toISOString().slice(0,10) : '',
     'Último Upsell': (c.ultimoUpsell && !isNaN(new Date(c.ultimoUpsell).getTime())) ? new Date(c.ultimoUpsell).toISOString().slice(0,10) : '',
     'Valor de Implantação': c.implantacaoValor, 'GC': c.gc?'Sim':'Não', 'PI': c.pi?'Sim':'Não', 'É Incorporadora': c.incorporadora?'Sim':'Não',
+    'Risco de Cancelamento': c.riscoCancelamento?'Sim':'Não', 'Em Inadimplência': c.inadimplente?'Sim':'Não',
     'Saúde': c.saude||'', 'Última Abordagem': c.ultimaAbordagem||'', 'Notas': c.notas||''
   }));
   const wbClientes = XLSX.utils.book_new();
